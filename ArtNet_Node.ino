@@ -10,9 +10,6 @@ Artnet artnet;
 byte ip[] = {192, 168, 1, 200};
 byte mac[] = {0x90, 0xA2, 0xDA, 0x11, 0x13, 0xC5}; // specific to the Shield v2 (see sticker underneath)
 
-// create global storage for last frame
-//int oldFrame[512] = {}; // will have indices 0-511 // not enough memeory for this one :(
-
 void setup()
 {
   Serial.begin(115200);
@@ -27,7 +24,6 @@ void loop()
   if (artnet.read() == ART_DMX) {
     // choose things to do
     sendDMX();
-    //sendComparedDMX();
     //printVerbose();
     printSimple();
   }
@@ -40,17 +36,6 @@ void sendDMX() {
     DmxSimple.write(c, v);
   }
 }
-
-/*void sendComparedDMX() {
-  for (int i = 0 ; i < artnet.getLength() ; i++) {
-    int v = artnet.getDmxFrame()[i];
-    if (v != oldFrame[i]) { // check if the value has changed since the last frame
-      int c = i+1;
-      DmxSimple.write(c, v);
-    }
-    oldFrame[i] = v; // update oldFrame with the value for use next time
-  }
-}*/
 
 void printVerbose() {
   Serial.print("universe number = ");
@@ -75,4 +60,3 @@ void printSimple() {
   }
   Serial.println();
 }
-
